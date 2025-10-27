@@ -22,7 +22,7 @@
                 <div id="resultBoard" style="display:grid;">
                 </div>
             </div>
-            <input type="button" value="Create Twin" onclick="CreateTwin()"/>
+            <input type="button" value="Next" onclick="CreateTwin()"/>
         </div>
 
         <script>
