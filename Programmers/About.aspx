@@ -16,10 +16,10 @@
             }
         </style>
         <div>
-            <div>
-                <div id="initialBoard" style="display:grid; grid-template-columns: repeat(5,15px);">
+            <div style="display:flex;flex-direction: row">
+                <div id="initialBoard" style="display:grid;margin-right: 15px">
                 </div>
-                <div id="resultBoard" style="display:grid; grid-template-columns: repeat(5,15px);">
+                <div id="resultBoard" style="display:grid;">
                 </div>
             </div>
             <input type="button" value="Create Twin" onclick="CreateTwin()"/>
@@ -27,17 +27,25 @@
 
         <script>
             const size = 5;
-            for (let x = 0; x < size; x++) {
-                for (let y = 0; y < size; y++) {
-                    document.getElementById("initialBoard").appendChild(CreateDv(x,y,1));
-                }
-            }
-            
-            const CreateTwin = () => {
-                document.getElementById("resultBoard").innerHTML = "";
+            const initialBoard = document.getElementById("initialBoard");
+            const resultBoard = document.getElementById("resultBoard");
+            window.addEventListener("load", () => {
+                initialBoard.style.gridTemplateColumns = "repeat(" + size + ",15px)";
+                resultBoard.style.gridTemplateColumns = "repeat(" + size + ",15px)";
                 for (let x = 0; x < size; x++) {
                     for (let y = 0; y < size; y++) {
-                        let dv = document.querySelector("[data-pos-x='" + x + "'][data-pos-y='" + y + "']");
+                        initialBoard.appendChild(CreateDv(x,y,1));
+                    }
+                }
+            })
+            
+            const CreateTwin = () => {
+
+                resultBoard.innerHTML = "";
+
+                for (let x = 0; x < size; x++) {
+                    for (let y = 0; y < size; y++) {
+                        let dv = document.querySelector("#initialBoard > div[data-pos-x='" + x + "'][data-pos-y='" + y + "']");
                         let aliveNeighbours = GetQtAllNeighbours(dv).filter(cell => {
                             return (cell != null && cell.dataset.val == "1");
                         });
@@ -60,7 +68,7 @@
                         if (val == "0" && aliveNeighbours.length == 3) {
                             val = "1";
                         }
-                        document.getElementById("resultBoard").appendChild(CreateDv(x, y, val));
+                        resultBoard.appendChild(CreateDv(x, y, val));
 
                     }
                 }
@@ -74,16 +82,17 @@
                 let xPlus1 = x + 1;
                 
                 let neighbours = [
-                    document.querySelector("[data-pos-x='" + (x - 1) + "'][data-pos-y='" + (y - 1) + "']"),
-                    document.querySelector("[data-pos-x='" + (x - 1) + "'][data-pos-y='" + y + "']"),
-                    document.querySelector("[data-pos-x='" + (x - 1) + "'][data-pos-y='" + yPlus1 + "']"),
-                    document.querySelector("[data-pos-x='" + x + "'][data-pos-y='" + (y - 1) +"']"),
-                    document.querySelector("[data-pos-x='" + x + "'][data-pos-y='" + yPlus1 +"']"),
-                    document.querySelector("[data-pos-x='" + xPlus1 + "'][data-pos-y='" + (y - 1) +"']"),
-                    document.querySelector("[data-pos-x='" + xPlus1 + "'][data-pos-y='" + y +"']"),
-                    document.querySelector("[data-pos-x='" + xPlus1 + "'][data-pos-y='" + yPlus1 +"']")
+                    document.querySelector("#initialBoard > div[data-pos-x='" + (x - 1) + "'][data-pos-y='" + (y - 1) + "']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + (x - 1) + "'][data-pos-y='" + y + "']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + (x - 1) + "'][data-pos-y='" + yPlus1 + "']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + x + "'][data-pos-y='" + (y - 1) +"']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + x + "'][data-pos-y='" + yPlus1 +"']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + xPlus1 + "'][data-pos-y='" + (y - 1) +"']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + xPlus1 + "'][data-pos-y='" + y +"']"),
+                    document.querySelector("#initialBoard > div[data-pos-x='" + xPlus1 + "'][data-pos-y='" + yPlus1 +"']")
                     
                 ];
+
 
                 return neighbours;
             }
@@ -99,7 +108,7 @@
                     } else {
                         e.currentTarget.dataset.val = "1";
                     }
-                    GetQtAllNeighbours(e.currentTarget)
+                    //GetQtAllNeighbours(e.currentTarget)
                 })
 
                 return dv;
